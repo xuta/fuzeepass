@@ -169,7 +169,7 @@ def create_group(fp, group_uri, name, notes):
         sys.stderr.write(f"[Error] {group_uri} is not a group uri\n")
         sys.exit(128)
 
-    fp.create_entry(group_uri, username=name, notes=notes)
+    fp.create_group(group_uri, group_name=name, notes=notes)
 
 
 @cli.command()

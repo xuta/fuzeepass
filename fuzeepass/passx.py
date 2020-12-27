@@ -113,28 +113,3 @@ class FuzeePass(object):
             self.k.delete_entry(entry)
 
         self._save()
-
-
-if __name__ == "__main__":
-    f = FuzeePass(db_file="/Users/xuta/tmp/keepassx/sample.kdbx", password="password")
-    f.ls()
-
-    # uri = "e:work/new_name_test1/github"
-    # print(f"=== {uri}")
-    # f.get(uri)
-    #
-    # f.set(uri, url="https://github.com", username="gg")
-    # print(f"=== {uri}")
-    # f.get(uri)
-
-    # uri1 = "g:personal/"
-    # print(f"=== {uri1}")
-    # f.get(uri1)
-    #
-    # print('=== create a new group')
-    # f.create_group(uri1, "email", notes="email credentials")
-    #
-    # print('=== create a new entry')
-    # f.create_entry(f"{uri1}/email/", "Gmail", username="info@gmail.com", password="superpassword", url='https://gmail.com')
-    #
-    # f.get("e:personal/email/Gmail", include_password=True)
