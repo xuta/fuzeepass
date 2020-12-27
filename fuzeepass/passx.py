@@ -1,7 +1,4 @@
-import sys
-import os
 from pykeepass import PyKeePass
-from pprint import pprint
 
 
 def pretty_print_dict(_dict):
@@ -18,7 +15,7 @@ class Attributes(object):
 class Uri(object):
     def __init__(self, uri):
         self.uri = uri
-        self.scheme, self.path = uri.split(":")
+        self.scheme, self.path = uri.split(":", 1)
 
         if self.scheme not in ["e", "g"]:
             raise TypeError(f"{self.scheme} is not supported")
@@ -31,9 +28,9 @@ class Uri(object):
 
 
 class FuzeePass(object):
-    def __init__(self, db_file, password=None, keyfile=None):
+    def __init__(self, db_file, password=None, key_file=None):
         self._db_file = db_file
-        self.k = PyKeePass(db_file, password, keyfile)
+        self.k = PyKeePass(db_file, password, key_file)
 
     def _save(self):
         self.k.save()
@@ -51,10 +48,12 @@ class FuzeePass(object):
     def _show_entry(self, path, include_password, only_password):
         entry = self.k.find_entries_by_path(path)
         if only_password:
-            print(entry.password, end='')
+            print(entry.password, end="")
             return
 
-        return_attrs = ["path"] + Attributes.SAFE_ENTRY if include_password else Attributes.ENTRY
+        return_attrs = ["path"] + (
+            Attributes.ENTRY if include_password else Attributes.SAFE_ENTRY
+        )
         entry_info = {k: getattr(entry, k) for k in return_attrs}
         print("[Entry Info]")
         pretty_print_dict(entry_info)

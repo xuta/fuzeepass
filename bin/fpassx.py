@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 import sys
+
 import click
 from pykeepass.exceptions import CredentialsError
-from fuzeepass import __version__
+
 from fuzeepass.passx import FuzeePass
-from pprint import pprint
+from fuzeepass import __version__
+
+
+pass_fuzeepass = click.make_pass_decorator(FuzeePass, ensure=True)
 
 
 def get_stdin(ctx, param, value):
@@ -12,15 +16,6 @@ def get_stdin(ctx, param, value):
         return click.get_text_stream("stdin").read().strip()
     else:
         return value
-
-
-pass_fuzeepass = click.make_pass_decorator(FuzeePass, ensure=True)
-
-
-# def check_authentication(ctx):
-#     if "fuzeepass_instance" not in ctx.obj:
-#         sys.stderr.write("[Error] Not authenticated yet\n")
-#         sys.exit(128)
 
 
 @click.group(
@@ -42,23 +37,13 @@ pass_fuzeepass = click.make_pass_decorator(FuzeePass, ensure=True)
     help="Path to keyfile. Skip if there is no keyfile associated with the db file. "
     "Use FUZEEPASS_KEY env if key-file is not set",
 )
-@click.option("-P", "--password", callback=get_stdin, help="(default) stdin")
+@click.option("-P", "--password", callback=get_stdin, help="(default: read from stdin)")
 @click.version_option(version=__version__)
 @click.pass_context
 def cli(ctx, database, key_file, password):
     """
      fpassx is a command line interface to KeePassX database files
     """
-    # print(f"database: {database}")
-    # print(f"key_file: {key_file}")
-    # print(f"password: {password}")
-    # print("===")
-    # pprint(vars(ctx))
-
-    # ctx.ensure_object(dict)
-    # if password is None and key_file is None:
-    #     return
-
     try:
         ctx.obj = FuzeePass(database, password, key_file)
     except CredentialsError:
@@ -101,15 +86,8 @@ def ls(fp):
 @pass_fuzeepass
 def show(fp, uri, include_password, only_password):
     """
-    Show details information for a specific uri
+    show details information for a specific uri
     """
-    # print(f"=== uri: {uri}")
-    # print(f"=== include_password: {include_password}")
-    # print(f"=== only_password: {only_password}")
-
-    # check_authentication(ctx)
-    #
-    # fp = ctx.obj["fuzeepass_instance"]
     fp.get(uri, include_password, only_password)
 
 
@@ -124,7 +102,6 @@ def show(fp, uri, include_password, only_password):
 @click.option("-n", "--notes")
 @pass_fuzeepass
 def update_entry(fp, uri, title, url, username, password, notes):
-    # check_authentication(ctx)
     if not uri.startswith("e:"):
         sys.stderr.write(f"[Error] {uri} is not an entry uri\n")
         sys.exit(128)
@@ -133,7 +110,6 @@ def update_entry(fp, uri, title, url, username, password, notes):
         sys.stderr.write("[Error] missing input attribute\n")
         sys.exit(128)
 
-    # fp = ctx.obj["fuzeepass_instance"]
     fp.set(uri, title=title, url=url, username=username, password=password, notes=notes)
 
 
@@ -145,7 +121,6 @@ def update_entry(fp, uri, title, url, username, password, notes):
 @click.option("-n", "--notes")
 @pass_fuzeepass
 def update_group(fp, uri, name, notes):
-    # check_authentication(ctx)
     if not uri.startswith("g:"):
         sys.stderr.write(f"[Error] {uri} is not a group uri\n")
         sys.exit(128)
@@ -154,7 +129,6 @@ def update_group(fp, uri, name, notes):
         sys.stderr.write("[Error] missing input attribute\n")
         sys.exit(128)
 
-    # fp = ctx.obj["fuzeepass_instance"]
     fp.set(uri, name=name, notes=notes)
 
 
@@ -169,13 +143,18 @@ def update_group(fp, uri, name, notes):
 @click.option("-n", "--notes")
 @pass_fuzeepass
 def create_entry(fp, group_uri, title, url, username, password, notes):
-    # check_authentication(ctx)
     if not group_uri.startswith("g:"):
         sys.stderr.write(f"[Error] {group_uri} is not a group uri\n")
         sys.exit(128)
 
-    # fp = ctx.obj["fuzeepass_instance"]
-    fp.create_entry(group_uri, title=title, url=url, username=username, password=password, notes=notes)
+    fp.create_entry(
+        group_uri,
+        title=title,
+        url=url,
+        username=username,
+        password=password,
+        notes=notes,
+    )
 
 
 @cli.command()
@@ -186,23 +165,22 @@ def create_entry(fp, group_uri, title, url, username, password, notes):
 @click.option("-n", "--notes")
 @pass_fuzeepass
 def create_group(fp, group_uri, name, notes):
-    # check_authentication(ctx)
     if not group_uri.startswith("g:"):
         sys.stderr.write(f"[Error] {group_uri} is not a group uri\n")
         sys.exit(128)
 
-    # fp = ctx.obj["fuzeepass_instance"]
     fp.create_entry(group_uri, username=name, notes=notes)
 
 
 @cli.command()
 @click.option(
-    "--uri", required=True, help="delete group or entry by uri",
+    "--uri", required=True, help="uri of a group (g:) or an entry (e:)",
 )
 @pass_fuzeepass
 def delete(fp, uri):
-    # check_authentication(ctx)
-    # fp = ctx.obj["fuzeepass_instance"]
+    """
+    delete a group or an entry by uri
+    """
     fp.delete(uri)
 
 
@@ -212,5 +190,3 @@ if __name__ == "__main__":
     except TypeError:
         sys.stderr.write("[Error] Not authenticated yet\n")
         sys.exit(128)
-    # GROUP = ["name", "notes"]
-    # ENTRY = ["title", "url", "username", "password", "notes"]
