@@ -214,7 +214,13 @@ def test_update(runner, setup_update):
             128,
             "[Error] g:personal/ is not an entry uri\n",
         ),
-        ("update-entry", "e:work/aws", (), 128, "[Error] missing input attribute\n",),
+        (
+            "update-entry",
+            "e:work/aws",
+            (),
+            128,
+            "[Error] missing input attribute\n",
+        ),
         (
             "update-group",
             "e:work/aws",

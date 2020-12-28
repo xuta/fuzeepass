@@ -42,7 +42,7 @@ def get_stdin(ctx, param, value):
 @click.pass_context
 def cli(ctx, database, key_file, password):
     """
-     fpassx is a command line interface to KeePassX database files
+    fpassx is a command line interface to KeePassX database files
     """
     try:
         ctx.obj = FuzeePass(database, password, key_file)
@@ -67,7 +67,9 @@ def ls(fp):
 
 @cli.command()
 @click.option(
-    "--uri", required=True, help="show detail for group or entry by uri",
+    "--uri",
+    required=True,
+    help="show detail for group or entry by uri",
 )
 @click.option(
     "+p",
@@ -93,7 +95,9 @@ def show(fp, uri, include_password, only_password):
 
 @cli.command()
 @click.option(
-    "--uri", required=True, help="entry uri (e:)",
+    "--uri",
+    required=True,
+    help="entry uri (e:)",
 )
 @click.option("-t", "--title")
 @click.option("--url")
@@ -115,7 +119,9 @@ def update_entry(fp, uri, title, url, username, password, notes):
 
 @cli.command()
 @click.option(
-    "--uri", required=True, help="group uri (g:)",
+    "--uri",
+    required=True,
+    help="group uri (g:)",
 )
 @click.option("--name")
 @click.option("-n", "--notes")
@@ -134,7 +140,9 @@ def update_group(fp, uri, name, notes):
 
 @cli.command()
 @click.option(
-    "--group-uri", required=True, help="base group to create the new entry on",
+    "--group-uri",
+    required=True,
+    help="base group to create the new entry on",
 )
 @click.option("-t", "--title", required=True)
 @click.option("--url")
@@ -159,7 +167,9 @@ def create_entry(fp, group_uri, title, url, username, password, notes):
 
 @cli.command()
 @click.option(
-    "--group-uri", required=True, help="base group to create the new group on",
+    "--group-uri",
+    required=True,
+    help="base group to create the new group on",
 )
 @click.option("--name", required=True)
 @click.option("-n", "--notes")
@@ -174,7 +184,9 @@ def create_group(fp, group_uri, name, notes):
 
 @cli.command()
 @click.option(
-    "--uri", required=True, help="uri of a group (g:) or an entry (e:)",
+    "--uri",
+    required=True,
+    help="uri of a group (g:) or an entry (e:)",
 )
 @pass_fuzeepass
 def delete(fp, uri):
