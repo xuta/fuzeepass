@@ -1,0 +1,54 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/test.yml'
+      - '**.py'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/test.yml'
+      - '**.py'
+
+
+jobs:
+  test-pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.tx
+          pip install -e .
+
+      - name: lint
+        run: flake8 .
+
+      - name: black
+        run: black .
+
+      - name: pytest
+        run: |
+          pip install coveralls PyYAML
+          pytest --cov fuzeepass --cov bin --cov-report html
+
+      - name: coveralls report
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: |
+          pip install coveralls PyYAML
+          coveralls
