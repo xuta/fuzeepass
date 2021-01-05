@@ -6,9 +6,10 @@ with open("README.md") as readme_file:
 
 setup(
     name="fuzeepass",
-    version="0.1.0",
+    version="0.1.1",
     description="A command-line fuzzy finder for KeePassX",
     long_description=readme,
+    long_description_content_type="text/markdown",
     author="Xuta Le",
     author_email="xuta.le@gmail.com",
     url="https://github.com/xuta/fuzeepass",
