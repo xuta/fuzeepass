@@ -7,7 +7,7 @@
 A command-line fuzzy finder for KeePassX
 
 ## Features
-![Animated demonstration](/assets/fuzeepass_1.gif)
+![Animated demonstration](https://raw.githubusercontent.com/xuta/fuzeepass/main/assets/fuzeepass_1.gif)
 
 * Fuzzy search powered by [fzf](https://github.com/junegunn/fzf)
 * Convenient hot-keys
@@ -16,22 +16,36 @@ A command-line fuzzy finder for KeePassX
 * Hot-key to copy password to clipboard
 
 ## Installation
-**updating...**
+
+* Requirements
+    - [fzf](https://github.com/junegunn/fzf) >= 0.24.0, as a CLI interactive engine
+    - [Linux] [xsel](https://github.com/kfish/xsel) or [xclip](https://github.com/astrand/xclip) to copy password to clipboard
+
+```bash
+# system wide
+pip install fuzeepass
+
+# or install to ~/.local/bin with
+pip install --user fuzeepass
+```
 
 ## Key-bindings
 
-| Key                                           | Action                    |
-| :----------------------------: | ------------------------------ |
-| <kbd>Ctrl</kbd> - <kbd>k</kbd> | Selection move up              |
-| <kbd>Ctrl</kbd> - <kbd>j</kbd> | Selection move down            |
-| <kbd>Ctrl</kbd> - <kbd>p</kbd> | Show password in preview panel |
-| <kbd>Ctrl</kbd> - <kbd>y</kbd> | Copy password to clipboard     |
-| <kbd>Ctrl</kbd> - <kbd>r</kbd> | Reload or back to main screen  |
-| <kbd>Ctrl</kbd> - <kbd>c</kbd> | Switch to `Create` screen      |
-| <kbd>Ctrl</kbd> - <kbd>u</kbd> | Switch to `Update` screen      |
-| <kbd>Ctrl</kbd> - <kbd>d</kbd> | Switch to `Delete` screen      |
+| Key                                             | Action                         |
+| :---------------------------------------------: | ------------------------------ |
+| <kbd>Ctrl</kbd> - <kbd>k</kbd>                  | Selection move up              |
+| <kbd>Ctrl</kbd> - <kbd>j</kbd>                  | Selection move down            |
+| <kbd>Ctrl</kbd> - <kbd>p</kbd>                  | Show password in preview panel |
+| <kbd>Ctrl</kbd> - <kbd>y</kbd>                  | Copy password to clipboard     |
+| <kbd>Ctrl</kbd> - <kbd>r</kbd> / <kdb>Esc</kbd> | Reload or back to main screen  |
+| <kbd>Ctrl</kbd> - <kbd>c</kbd>                  | Switch to `Create` screen      |
+| <kbd>Ctrl</kbd> - <kbd>u</kbd>                  | Switch to `Update` screen      |
+| <kbd>Ctrl</kbd> - <kbd>d</kbd>                  | Switch to `Delete` screen      |
+| <kbd>Ctrl</kbd> - <kbd>q</kbd>                  | Quit                           |
 
 ## How it works
+
+**updating...**
 
 ## References
 * Powered by [fzf](https://github.com/junegunn/fzf)
